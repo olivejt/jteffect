@@ -1,0 +1,52 @@
+/*css3
+不需要计算 浏览器自动计算 只需设置列宽 性能高
+列宽随着浏览器窗口大小进行改变
+图片顺序垂直排列
+*/
+#main{
+	/*分栏*/
+	-webkit-column-width:190px;
+	-moz-column-width:190px;
+	-o-column-width:190px;
+	-ms-column-width:190px;
+
+	/*设置列数 建议不与column-width一起用*/
+	/*
+	-webkit-column-count:5;
+	-moz-column-count:5;
+	-o-column-count:5;
+	-ms-column-count:5;
+	*/
+
+	/*设置列间分割线*/
+	/*
+	-webkit-column-rule:2px dashed #F00;
+	-moz-column-rule:2px dashed #F00;
+	-o-column-rule:2px dashed #F00;
+	-ms-column-rule:2px dashed #F00;
+	*/	
+
+	/*设置列间隙*/
+	-webkit-column-gap:2px;
+	-moz-column-gap:2px;
+	-o-column-gap:2px;
+	-ms-column-gap:2px;
+}
+
+.box{
+	padding: 10px 0 0 15px;
+}
+
+.pic {
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	box-shadow: 0 0 5px #ccc;
+	width: 160px;
+}
+
+.pic img {
+	display: block;
+	width: 160px;
+	height: auto;
+}
