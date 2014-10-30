@@ -1,0 +1,219 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type"  content="text/html;charset=utf-8">
+	<title></title>
+	<style type="text/css">
+		body{
+			margin: 0px;
+			padding: 0px;
+			font-size: 14px;
+			color: #333;
+		}
+		.panel{
+			width: 240px;
+			height: 240px;
+			border: 1px solid #ccc;
+			position: absolute;
+			background-color: #64b9d2;
+			z-index: 0;
+		}
+		.panel .title{
+			background-color: #eee;
+			text-align: center;
+			line-height: 20px;
+			border: 1px solid #fff;
+			font-weight: bold;
+			cursor: crosshair;
+		}
+		.ui-r{
+			position: absolute;
+			right: 0px;
+			top: 0px;
+			width: 10px;
+			height: 100%;
+			background-color: #95dc84;
+			cursor: e-resize;
+		}
+		.ui-b{
+			position: absolute;
+			right: 0px;
+			bottom: 0px;
+			width:100%;
+			height: 10px;
+			background-color: #95dc84;
+			cursor: s-resize;
+		}
+		.ui-rb{
+			position: absolute;
+			right: 0px;
+			bottom: 0px;
+			width: 10px;
+			height: 10px;
+			background-color: #95dc84;
+			cursor: se-resize;
+		}
+		.create{
+			position: absolute;
+			right: 0px;
+			top: 0px;
+			width: 140px;
+			height: 160px;
+			background-color: #ccc;
+			-webkit-border-radius:5px;
+			z-index: 0;
+			-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+			filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+			opacity: 0.5;
+		}
+		.create input{
+			border: 0;
+			height: 20px;
+			width: 80px;
+			margin: 10px 30px;
+			-webkit-border-radius:5px;
+		}
+		.create button{
+			border: 0;
+			width: 50px;
+			margin: 10px 45px;
+			-webkit-border-radius:5px;
+		}
+	</style>
+	<script src="js/jquery-1.11.1.js"></script>
+</head>
+<body>
+	<div class="create">
+		<input type="text" id="pid" name="" value=""  placeholder="id"><br />
+		<input type="text" id="pw" name="" value=""  placeholder="width"><br />
+		<input type="text" id="ph" name="" value=""  placeholder="height"><br />
+		<button type="" id="create">create</button>
+	</div><!-- / -->
+<script type="text/javascript">
+	var newzindex = 1; //全局z-index变量 每点击一个panel则使该目标的z-index最大
+	//panel 面板 ctrl控制元素 type是类型（r b rb）
+	var m_panel,m_ctrl,m_type;
+
+	//moving 数遍是否按在控制元素 开始拖动
+	//start起始位置 to结束位置
+	var moving = 0, m_start_x = 0 , m_start_y = 0 , m_to_x = 0 , m_to_y = 0 , m_click_x = 0 , m_click_y = 0 ,panelleft= 0 , paneltop = 0 ;
+
+
+	//添加支持拖拽
+
+	function on_mousedown (e,panel,ctrl,type) {
+			// 鼠标点下
+			var e = e||window.event;
+			//计算鼠标在页面上的位置
+
+			//鼠标当前位置
+			m_click_x = e.pageX;
+			m_click_y = e.pageY;
+
+			panelleft = panel.offset().left;
+			paneltop = panel.offset().top;
+
+			m_start_x = e.pageX - ctrl.offset().left;
+			m_start_y = e.pageY - ctrl.offset().top;
+
+			m_panel = panel;
+			m_ctrl = ctrl;
+			m_type = type;
+
+			//监听处理移动事件
+			moving = setInterval(on_move,10);
+
+		}
+
+	function on_move () {
+			if(moving){
+				var to_x = m_to_x - m_start_x - m_panel.offset().left;
+				var to_y = m_to_y - m_start_y - m_panel.offset().top;
+				var panelW = to_x + m_ctrl.width();
+				var panelH = to_y + m_ctrl.height();
+				if(m_type=='r' || m_type=='rb'){
+					m_ctrl.css("left",to_x+'px');
+					m_panel.width(panelW);
+				}
+				if(m_type=='b' || m_type=='rb'){
+					m_ctrl.css("top",to_y+'px');
+					m_panel.height(panelH);
+				}
+				if(m_type=='t'){
+					var off_left = panelleft + m_to_x - m_click_x;
+					var off_top = paneltop + m_to_y - m_click_y;
+					m_panel.css("left", off_left + "px").css("top", off_top + "px");
+				}
+			}
+		}
+
+	function on_mouseup () {
+		moving = 0;
+	}
+
+	function Resizable (panel_id,panel_w,panel_h) {
+		//新增面板
+		var p = $("<div>");
+		p.attr("id",panel_id).addClass("panel").css("width",panel_w).css("height",panel_h).appendTo($("body")).mousedown(function () {
+			newzindex++;
+			$(this).css("z-index",newzindex);
+		});
+
+		//加入控制元素
+		var t = $("<div>");
+		var r = $("<div>");
+		var b = $("<div>");
+		var rb = $("<div>");
+		 
+		var id = "#"+panel_id;
+		var $panel = $(id);
+		t.addClass("title").attr("mtype","t").html(panel_id);
+		r.attr("class","ui-r ui-r-ctrl").attr("mtype","r");
+		b.attr("class","ui-b ui-b-ctrl").attr("mtype","b");
+		rb.attr("class","ui-rb ui-rb-ctrl").attr("mtype","rb");
+		$panel.append(t).append(r).append(b).append(rb);
+
+		//添加事件
+		//[class!="title"]
+		$panel.find('div').bind("mousedown",function (e) {
+			var type = $(this).attr("mtype");
+			on_mousedown(e,$panel,rb,type);
+		}).bind("mouseup",function () {
+			on_mouseup();
+		});
+	}
+
+	$(document).ready(function () {
+		
+
+		var $create = $(".create");//获取控制产生panel的表单面板
+
+		$create.bind("mouseover",function () {
+			$(this).stop().animate({opacity:1,"z-index":9999},500);
+		}).bind("mouseout",function () {
+			$(this).stop().animate({opacity:0.5,"z-index":0},500);
+		}).find("button").click(function (argument) {
+			var pid = $("#pid").val();
+			var pw = $("#pw").val();
+			var ph = $("#ph").val();
+			var checkid = "#"+pid;
+			if($(checkid).length > 0){
+				alert("id existed!");
+				return false;
+			}
+			//此处应加个id判断 防止建立相同id的panel
+			if(pw&&ph&&pid){
+				Resizable(pid,pw,ph);
+			}
+		});
+		
+	});
+
+	$(document).mousemove(function (e) {
+		var e = e;
+		m_to_x = e.pageX;
+		m_to_y = e.pageY;
+	});
+</script>
+</body>
+
+</html>
