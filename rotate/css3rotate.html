@@ -1,0 +1,162 @@
+<html>
+<head>
+	<title>css3翻转测试</title>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		body{
+			/*background: #95dc84;*/
+			background: #222;
+				background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAGklEQVQIW2NkYGD4D8SMQAwGcAY2AbBKDBUAVuYCBQPd34sAAAAASUVORK5CYII=);
+
+		}
+		.content{
+			
+		}
+		.box{
+			position: absolute;
+			/*top: 20%;*/
+			/*left: 20%;*/
+			overflow: hidden;
+		}
+		.pic{
+			margin: 0px auto;
+			padding: 5px;
+			border-radius: 5px;
+			border : 1px solid #ccc;
+			width: 1010px;
+			height: 630px;
+			z-index: 0;
+			-webkit-transform: translateZ( 0px );
+		}
+		.pic img{
+			width: 1010px;
+			height: 630px;
+		}
+		.show {
+			visibility: visible;
+			z-index: 2;
+		}
+		.hidden{
+			visibility: hidden;
+			z-index: 1;
+		}
+		.capable{
+			-webkit-perspective: 1000px;
+			-webkit-transform-style: preserve-3d;
+			/*-webkit-transition:all 3s; */
+			/*-webkit-transform:perspective(400px) rotateY(40deg);*/
+		}
+		.hiddenleft{
+			-webkit-transform: translateZ(-100px);
+			-webkit-animation: hidden-left 1s forwards ease; 
+			/*show-left 向左显示 hidden-right 向右隐藏*/
+		}
+		.showleft{
+			-webkit-transform: translateZ(-100px);
+			-webkit-animation: show-left 1s forwards ease;
+		} 
+		.hiddenright{
+			-webkit-transform: translateZ(-100px);
+			-webkit-animation: hidden-right 1s forwards ease; 
+		}
+		.showright{
+			-webkit-transform: translateZ(-100px);
+			-webkit-animation: show-right 1s forwards ease; 
+			/*show-left 向左显示 hidden-right 向右隐藏*/
+		}
+
+		@-webkit-keyframes hidden-right /* Safari 和 Chrome */
+		{
+		0%   {-webkit-transform:translateZ( 0px ) ;visibility: visible;opacity: 1;}
+		
+		40%  {-webkit-transform: translate( 34%, 0 ) scale( 0.8 ) perspective(1000px) rotateY( -20deg ); opacity: 0.5;}
+		50%	 {opacity : 0;}
+		100% {-webkit-transform:translateZ( -200px ) ;opacity : 0;visibility: hidden;}
+		}
+
+		@-webkit-keyframes hidden-left /* Safari 和 Chrome */
+		{
+		0%   {-webkit-transform:translateZ( 0px ) ;visibility: visible;opacity: 1;}
+		
+		40%  {-webkit-transform:translate( -34%, 0 ) scale( 0.8 ) perspective(1000px) rotateY( 20deg ); opacity: 0.5;}
+		50%	 {opacity : 0;}
+		100% {-webkit-transform:translateZ( -200px ) ;opacity: 0;visibility: hidden;}
+		}
+
+		@-webkit-keyframes show-right /* Safari 和 Chrome */
+		{
+		0%   {-webkit-transform:translateZ( -200px ) ;opacity: 0;}
+
+		40%  {-webkit-transform:translate( -34%, 0 ) scale( 0.8 ) perspective(1000px) rotateY( 20deg );opacity: 1;}
+		
+		100% {-webkit-transform:translateZ( 0px ) ;}
+		}
+
+		@-webkit-keyframes show-left /* Safari 和 Chrome */
+		{
+		0%   {-webkit-transform:translateZ( -200px ) ;opacity: 0;}
+
+		40%  {-webkit-transform:translate( 34%, 0 ) scale( 0.8 ) perspective(1000px) rotateY( -20deg );opacity: 1;}
+		
+		100% {-webkit-transform:translateZ( 0px ) ;}
+
+		}
+
+		.bullets {
+			position: absolute;
+			width: 100%;
+			bottom: 20px;
+			padding: 0;
+			margin: 0;
+			text-align: center;
+		}
+
+			.bullets li {
+				display: inline-block;
+				width: 20px;
+				height: 20px;
+				border-radius: 50%;
+				margin: 0 3px;
+
+				background: rgba( 255, 255, 255, 0.5 );
+				box-shadow: 0px 0px 4px rgba( 0, 0, 0, 0.2 );
+				cursor: pointer;
+
+				-webkit-tap-highlight-color: rgba( 0, 0, 0, 0 );
+			}
+
+				.bullets li:hover {
+					background: rgba( 255, 255, 255, 0.8 );
+				}
+
+				.bullets li.active {
+					cursor: default;
+					background: #fff;
+				}
+	</style>
+	<script src="js/jquery-1.11.1.js"></script>
+	<script src="js/css3rotate.js"></script>
+</head>
+<body>
+<div id="content">
+	
+</div>
+	<ul id="bullets" class="bullets">
+		
+	</ul>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			var datas = new Array();
+			datas[0] = "images/green.png";
+			datas[1] = "images/yellow.png";
+			datas[2] = "images/pink.png";
+			datas[3] = "images/blue.png";
+			jtrotate.loadimg(datas);
+
+		});
+	</script>
+</body>
+</html>
