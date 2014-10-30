@@ -1,0 +1,100 @@
+<html>
+<head>
+	<title>MySearch</title>
+	<meta http-equiv="X-UA-Compatible" charset="utf-8" content="IE=edge">
+	<LINK href="favicon.ico" type="image/x-icon" rel=icon>
+	<style type="text/css">
+		body{
+			background-color: #333;
+		}
+		.bg-div{
+			background-image: url(images/bg.jpg);
+			width: 990px;
+			height: 630px;
+			background-repeat: no-repeat;
+			margin: 0 auto;
+			position: relative;
+		}
+		.search-box{
+			position: absolute;
+			top: 200px;
+			left: 300px;
+		}
+		.logo{
+			background-image: url(images/jt.png);
+			width: 100px;
+			height: 100px;
+			float: left;
+			margin: -30px 18px 0 0;
+		}
+		form{
+			float: left;
+			background-color: #fff;
+			height: 25px;
+			padding: 5px;
+		}
+		.search-input-text{
+			border: 0;
+			height: 25px;
+			width: 350px;
+			line-height: 25px;
+			outline: none;
+			float: left;
+		}
+		.search-input-button{
+			border: 0;
+			background-image: url(images/search_btn.png);
+			width: 45px;
+			height: 25px;
+			cursor: pointer;
+		}
+		.suggest{
+			text-decoration: none;
+			width: 403px;
+			background-color: #fff;
+			border: 1px solid #999;
+		}
+		.suggest ul{
+			list-style:	none;
+			margin: 0;
+			padding: 0;
+		}
+		.suggest ul li {
+			padding: 3px;
+			font-size: 14px;
+			line-height: 25px;
+			cursor: pointer;
+		}
+		.suggest ul li:hover {
+			background-color: #e5e5e5;
+			text-decoration: underline;
+		}
+		
+	</style>
+	<script src="js/search.js"></script>
+
+	<!--
+		jquery方法实现
+		<script src="js/jquery-1.11.1.js"></script>
+		<script src="js/search_jq.js"></script>
+	-->
+</head>
+<body>
+	<div id="" class="">
+		<div id="" class="search-box">
+			<div id="" class="logo">
+			</div><!-- / -->
+			<form id="search-form" method="get" action="http://www.baidu.com/s">
+				<input type="text" name="wd" class="search-input-text" id="search-input" value="" placeholder="search sth." autocomplete="off">
+				<input type="button" name="" class="search-input-button" id="search-btn" value="">
+			</form>
+		</div>
+	</div><!-- / -->
+
+	<div id="search-suggest" class="suggest" style="display:none;">
+		<ul id="sug-ul" class="">
+			<li>test result</li>
+		</ul><!-- / -->
+	</div><!-- / -->
+</body>
+</html>
