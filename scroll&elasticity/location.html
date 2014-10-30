@@ -1,0 +1,254 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>导航定位</title>
+<style type="text/css">
+	* {
+		margin: 0;
+		padding: 0;
+	}
+
+	body {
+		font-size: 12px;
+		line-height: 1.7;
+	}
+	li {
+		list-style: none;
+	}
+	#content{
+		width: 800px;
+		margin:  0 auto;
+		padding: 20px;
+	}
+	#content h1{
+		color: #0088bb;
+	} 
+	#content .item{
+		padding: 20px;
+		margin-bottom: 20px;
+		border: 1px dotted #0088bb;
+	}
+	#content .item h2{
+		font-size: 16px;
+		font-weight: bold;
+		border-bottom: 2px solid #0088bb;
+		margin-bottom: 10px;
+	}
+	#content .item li{
+		display: inline;
+		margin-right: 10px;
+	}
+	#content .item li a img {
+		width: 230px;
+		height: 230px;
+		border: none;
+	}
+
+	#menu{
+		position: fixed;
+		top:100px;
+		left: 50%;
+		margin-left: 400px;
+		width: 80px;
+	}
+
+	#menu ul li a{
+		display: block;
+		/*margin: 5px 0;*/
+		font-size: 14px;
+		font-weight: bold;
+		color: #333;
+		width: 80px;
+		height: 50px;
+		line-height: 50px;
+		text-decoration: none;
+		text-align: center;
+	}
+	#menu ul li a:hover,
+	#menu ul li a.current{
+		/*color: #fff;
+		background-color: #0088bb;*/
+	}
+
+	#block{
+		position: fixed;
+		top:100px;
+		left: 50%;
+		margin-left: 480px;
+		width: 20px;
+		height: 250px;
+		background-color: #80b600;
+	}
+</style>
+<script src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function  () {
+
+		var menu = $("#menu");
+		var items = $("#content").find(".item");//效率比$("content .item")要高
+		var currentId = "";//当前所在楼层（item）的#id
+		
+
+		//初始化小滑块
+		var currentItem = menu.find(".current");
+		var nav_height = currentItem.innerHeight();
+		var nav_top = currentItem.position().top+100;
+		var nav_block = $("#block");
+		nav_block.css({height:nav_height,top:nav_top});
+
+		//滚动条发生事件
+		$(window).scroll(function(){
+
+			var top = $(document).scrollTop();
+			//console.log(top);把值写到控制台显示，就不用总是alert
+		
+			items.each(function(){
+				var m = $(this); //把this放到变量里 是个好习惯
+				var itemTop = m.offset().top; 
+				//console.log(itemTop);
+				if(top > itemTop-200){ 
+				//减200px是因为大部分页面属于下一个楼层
+					currentId = "#" + m.attr("id");
+				}else{
+					return false;
+				}
+			});
+
+			var currentLink = menu.find(".current");
+			if(currentId && currentLink.attr("href") != currentId){
+				currentLink.removeClass("current");
+				menu.find("[href=" + currentId + "]").addClass("current");
+				//当滚轮滚至改变了当前的a标签时，滑块随之移动
+				currentItem = menu.find(".current");
+				nav_height = currentItem.innerHeight();
+				nav_top = currentItem.position().top+100;
+				nav_block.animate({height:nav_height,top:nav_top});
+			}
+		});
+
+		$(".menuLink").find("ul li a").click(function(){
+			var m = $(this);
+			var currentId = m.attr("href");
+			var scrollto = $(currentId).offset().top;
+			//console.log(scrollto);
+			//点击a标签 页面滚动至相应位置，天猫首页采取这种做法，所以导航栏是跳变而不是渐变
+			//$("html,body").animate({scrollTop:scrollto},"slow");
+
+			//点击后再次定位小滑块
+			nav_height = m.innerHeight();
+			nav_top = m.position().top+100;
+			nav_block.css({height:nav_height,top:nav_top});
+			//return false;//return false使a标签不跳至锚点
+		});
+
+		
+
+		//menu中a标签hover效果 弹性运动（elasticity）
+		$("#menu ul li a").hover(function(){
+			var currentHover = $(this);
+			hover_nav_height = currentHover.innerHeight();
+			hover_nav_top = currentHover.position().top+100;
+			nav_block.stop().animate({
+				height:hover_nav_height,
+				top:hover_nav_top
+			},200);
+		},function(){
+			nav_block.stop().animate({ 
+				height: nav_height, 
+				top: nav_top
+			});
+		});
+
+	});
+</script>
+</head>
+
+<body>
+	<div id="menu" class="menuLink">
+		<ul>
+			<li><a href="#item1" class="current">1F 男装</a></li>
+			<li><a href="#item2">2F 女装</a></li>
+			<li><a href="#item3">3F 美妆</a></li>
+			<li><a href="#item4">4F 数码</a></li>
+			<li><a href="#item5">5F 母婴</a></li>
+		</ul>			
+	</div><!-- / -->
+	<div id="block" class="">
+		
+	</div><!-- / -->
+	<div id="content" class="">
+		<h1>购物</h1>
+		<div id="item1" class="item">
+			<h2>1F 男装</h2>
+			<ul>
+				<li><a><img src="images/1F.jpg" alt=""></a></li>
+				<li><a><img src="images/1F.jpg" alt=""></a></li>
+				<li><a><img src="images/1F.jpg" alt=""></a></li>
+				<li><a><img src="images/1F.jpg" alt=""></a></li>
+				<li><a><img src="images/1F.jpg" alt=""></a></li>
+				<li><a><img src="images/1F.jpg" alt=""></a></li>
+				<li><a><img src="images/1F.jpg" alt=""></a></li>
+				<li><a><img src="images/1F.jpg" alt=""></a></li>
+				<li><a><img src="images/1F.jpg" alt=""></a></li>
+			</ul>					
+		</div><!-- / -->
+		<div id="item2" class="item">
+			<h2>2F 女装</h2>
+			<ul>
+				<li><a><img src="images/2F.jpg" alt=""></a></li>
+				<li><a><img src="images/2F.jpg" alt=""></a></li>
+				<li><a><img src="images/2F.jpg" alt=""></a></li>
+				<li><a><img src="images/2F.jpg" alt=""></a></li>
+				<li><a><img src="images/2F.jpg" alt=""></a></li>
+				<li><a><img src="images/2F.jpg" alt=""></a></li>
+				<li><a><img src="images/2F.jpg" alt=""></a></li>
+				<li><a><img src="images/2F.jpg" alt=""></a></li>
+				<li><a><img src="images/2F.jpg" alt=""></a></li>
+			</ul>					
+		</div><!-- / -->
+		<div id="item3" class="item">
+			<h2>3F 美妆</h2>
+			<ul>
+				<li><a><img src="images/3F.jpg" alt=""></a></li>
+				<li><a><img src="images/3F.jpg" alt=""></a></li>
+				<li><a><img src="images/3F.jpg" alt=""></a></li>
+				<li><a><img src="images/3F.jpg" alt=""></a></li>
+				<li><a><img src="images/3F.jpg" alt=""></a></li>
+				<li><a><img src="images/3F.jpg" alt=""></a></li>
+				<li><a><img src="images/3F.jpg" alt=""></a></li>
+				<li><a><img src="images/3F.jpg" alt=""></a></li>
+				<li><a><img src="images/3F.jpg" alt=""></a></li>
+			</ul>					
+		</div><!-- / -->
+		<div id="item4" class="item">
+			<h2>4F 数码</h2>
+			<ul>
+				<li><a><img src="images/4F.jpg" alt=""></a></li>
+				<li><a><img src="images/4F.jpg" alt=""></a></li>
+				<li><a><img src="images/4F.jpg" alt=""></a></li>
+				<li><a><img src="images/4F.jpg" alt=""></a></li>
+				<li><a><img src="images/4F.jpg" alt=""></a></li>
+				<li><a><img src="images/4F.jpg" alt=""></a></li>
+				<li><a><img src="images/4F.jpg" alt=""></a></li>
+				<li><a><img src="images/4F.jpg" alt=""></a></li>
+				<li><a><img src="images/4F.jpg" alt=""></a></li>
+			</ul>					
+		</div><!-- / -->
+		<div id="item5" class="item">
+			<h2>5F 母婴</h2>
+			<ul>
+				<li><a><img src="images/5F.jpg" alt=""></a></li>
+				<li><a><img src="images/5F.jpg" alt=""></a></li>
+				<li><a><img src="images/5F.jpg" alt=""></a></li>
+				<li><a><img src="images/5F.jpg" alt=""></a></li>
+				<li><a><img src="images/5F.jpg" alt=""></a></li>
+				<li><a><img src="images/5F.jpg" alt=""></a></li>
+				<li><a><img src="images/5F.jpg" alt=""></a></li>
+				<li><a><img src="images/5F.jpg" alt=""></a></li>
+				<li><a><img src="images/5F.jpg" alt=""></a></li>
+			</ul>					
+		</div><!-- / -->			
+	</div><!-- / -->		
+</body>
+</html>
