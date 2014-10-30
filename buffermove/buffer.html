@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		body{
+			margin: 0;
+			padding: 0;
+		}
+		.box{
+			position: relative;
+			margin-left:200px;
+			margin-top: 200px;
+			border: 0;
+			width: 50px;
+			height: 50px;
+			background-color:#95dc84;
+			border-radius: 25px; 
+			overflow: hidden;
+		}
+		.tag{
+			border: 0;
+			margin-left: 10px;
+			margin-top: 10px;
+			font-size: 20px;
+			line-height: 20px;
+		}
+		.btn{
+			outline:0;
+			position: absolute;
+			border: 0;
+			background-image: url(images/jt.png);
+			right: 0px;
+			top: 0px;
+			width: 50px;
+			height: 50px;
+			border-radius: 25px;
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+	<div id="box" class="box">
+		<div id="tag" class="tag">
+			gsgs
+		</div><!-- / -->
+		<button id="btn" class="btn"></button><!-- / -->
+	</div><!-- / -->
+	<script type="text/javascript">
+		var oBox = document.getElementById('box');
+		var oBtn = document.getElementById('btn');
+		var status = 0;
+		oBtn.onclick = function(){
+			if(status == 0){
+				move(oBox,300);
+				status = 1;
+			}else{
+				move(oBox,50);
+				status = 0;
+			}
+		};
+		function move (obj,target) {
+			clearInterval(timer);
+			var timer = setInterval(function() {
+				var objW = parseInt(obj.offsetWidth);
+				if (target == objW) {
+					clearInterval(timer);
+				}else{
+					var speed = (target - objW)/6;
+					speed = speed > 0 ?  Math.ceil(speed) : Math.floor(speed);
+					obj.style.width = objW + speed + 'px';
+				}
+			},30);
+		}
+	</script>
+</body>
+</html>
