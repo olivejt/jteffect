@@ -1,0 +1,101 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<title>jt slide</title>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		.wrapper{
+			
+
+		}
+		.box{
+			background-color:#C1FFC1;
+		}
+		.pic{
+			position: absolute;
+			left: 374px;
+			background-color: #fff;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			box-shadow: 0 0 5px #ccc;
+			width: 600px;
+			height: 374px;
+			padding: 10px;
+			opacity: 0;
+			display: none;
+		}
+		.pic img{
+			width: 600px;
+			height: 374px;
+		}
+		.loading{
+			position: absolute;
+			display: block;
+			top: 170px;
+			left: 660px;
+		}
+		.loading img{
+			width: 50px;
+			height: 50px;
+		}
+		
+		.prev{
+			position: absolute;
+			width: 32px;
+			height: 47px;
+			top: 170px;
+			left: 300px;
+			background-image:url(images/banner_turnLeft.png);
+			cursor: pointer;
+		}
+		.next{
+			position: absolute;
+			width: 32px;
+			height: 47px;
+			top: 170px;
+			left: 1036px;
+			background-image:url(images/banner_turnRight.png);
+			cursor: pointer;
+		}
+	</style>
+	<script src="js/jquery-1.11.1.js"></script>
+	<script src="js/jtslide.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			var datas = new Array();
+			datas[0] = "images/miss.jpg";
+			datas[1] = "images/riven.jpg";
+			datas[2] = "images/riven2.jpg";
+			datas[3] = "images/kapai.jpg";
+			jtslide.init();
+			jtslide.loadimg(datas);
+		})
+	</script>
+</head>
+<body>
+	<div id="" class="wrapper">
+		<div id="" class="box">
+			<p><a href="#" class="prev" id="prev"></a></p>
+			<div class="loading">
+				<img src="../images/loading.gif">
+			</div>
+			<div id="pic1" class="pic">
+				<img src="">
+			</div><!-- / -->
+			<div id="pic2" class="pic">
+				<img src="">
+			</div><!-- / -->
+			<div id="pic3" class="pic">
+				<img src="">
+			</div><!-- / -->
+			<div id="pic4" class="pic">
+				<img src="">
+			</div><!-- / -->
+			<p><a href="#" class="next" id="next"></a></p>
+		</div><!-- / -->
+	</div><!-- / -->
+</body>
+</html>
