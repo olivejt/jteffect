@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>放大镜</title>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		#demo{
+			display: block;
+			width: 404px;
+			height: 240px;
+			margin: 50px;
+			position: relative;
+			border: 1px solid #ccc;
+		}
+		#small-box{
+			position: relative;
+			z-index: 1;
+			width: 404px;
+			height: 240px;
+		}
+		#zoom-box{
+			display: none;
+			width: 160px;
+			height: 120px;
+			position: absolute;
+			background-color: #ffffcc;
+			border: 1px solid #ccc;
+			-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+			filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50)0.5;
+			opacity: 0.5;
+			cursor: move;
+			}
+		#big-box{
+			display: none;
+			position: absolute;
+			top: 0;
+			left: 460px;
+			width: 480px;/*zoombox -> bigbox || smallimg -> bigimg 等比例放大*/
+			height: 360px;
+			overflow: hidden;
+			border: 1px solid #ccc;
+			z-index: 1;
+		}
+		#big-box img{
+			position: absolute;
+			z-index: 5;
+		}
+	</style>
+	<script src="js/jquery-1.11.1.js"></script>
+</head>
+<body>
+	<div id="demo" class="">
+		<div id="small-box" class="">
+			<div id="zoom-box" class=""></div>
+			<img src="images/miss_small.jpg" alt="">
+		</div>
+		<div id="big-box" class="">
+			<img src="images/miss_big.jpg" alt="">
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			// 获取页面元素
+			var $demo = $("#demo");
+			var $bigbox = $("#big-box");
+			var $smallbox = $("#small-box");
+			var $zoombox = $("#zoom-box");
+			var $bigimg = $bigbox.find("img")[0];
+			var $smallimg = $smallbox.find("img")[0];
+
+			$smallbox.bind("mouseover",function () {
+				// 显示或隐藏放大镜
+				$zoombox.show();
+				$bigbox.show();
+			}).bind("mouseout",function () {
+				$zoombox.hide();
+				$bigbox.hide();
+			}).bind("mousemove",function (e) {
+				// 移动放大镜
+				var mouse_x = e.pageX;
+				var mouse_y = e.pageY;
+				var smallboxW = $smallbox.width();
+				var smallboxH = $smallbox.height();
+				var zoomboxW = $zoombox.outerWidth();	//放大镜高度应包含border 否则会溢出一个border的高度
+				var zoomboxH = $zoombox.outerHeight();
+				var zoombox_left = mouse_x - $smallbox.offset().left - zoomboxW/2;
+				var zoombox_top = mouse_y - $smallbox.offset().top - zoomboxH/2;
+
+				//放大镜边界到达smallbox边界时停止移动
+				if(zoombox_left < 0) zoombox_left = 0; //左
+				if(zoombox_left > (maxl = smallboxW - zoomboxW)) zoombox_left = maxl; //右
+				if(zoombox_top < 0) zoombox_top = 0; //上
+				if(zoombox_top > (maxt = smallboxH - zoomboxH)) zoombox_top = maxt; //下
+
+				$zoombox.css("left",zoombox_left);
+				$zoombox.css("top",zoombox_top);
+
+				// 大图跟随放大镜反向移动 按照图片比例
+				var percentX = zoombox_left / ( $smallbox.width() - $zoombox.width() );
+				var percentY = zoombox_top / ( $smallbox.height() - $zoombox.height() );
+
+
+				var bigimg_left = -percentX * ($bigimg.width - $bigbox.width());
+				var bigimg_top = -percentY * ($bigimg.height - $bigbox.height());
+
+				$bigimg.style.left=bigimg_left+"px"; //图片img对象 用css("left",xxx)无效 $bigimg.css("left","100px");
+				$bigimg.style.top=bigimg_top+"px";
+				
+			});
+		});
+	</script>
+</body>
+</html>
